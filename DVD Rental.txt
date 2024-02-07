@@ -1,0 +1,197 @@
+select * 
+from actor;
+
+select *
+from film;
+
+select film_id, title
+from film;
+
+-- return customer_id, first_name, email
+select customer_id, first_name, email
+from customer;
+
+select distinct rating
+from film;
+
+-- return the distinct rate
+select distinct rental_rate
+from film;
+
+-- return movies that are R rated (title, description, release_year, rental_rate)
+select title, description, release_year, rental_rate
+from film
+where rating = 'R';
+
+-- customer 102 forgot their bag in our store, i want you guys to get the customer first name
+
+select first_name,last_name,email
+from customer
+where customer_id = 102;
+
+--customer whose firstname is Jamie nd lastname is Rice, and address
+select first_name, last_name, address_id
+from customer 
+where first_name= 'Jamie' and last_name = 'Rice';
+
+-- return the page rental rate which amount is less than 1USD or greater than 8USD
+select *
+from payment
+where amount < 1 or amount > 8;
+
+--select count--
+
+select count (*)
+from customer;
+
+--return customer's whose first name is Jamie
+
+select *
+from customer
+where first_name = 'Jamie';
+
+---return the number of countries we have
+select count (*)
+from country;
+
+---limit
+select *
+from customer
+limit 10;
+
+--return the top 10 film
+select *
+from film
+limit 10;
+
+--order by (ASC and DESC)--
+select *
+from customer
+order by first_name 
+limit 5;
+
+--return the top 10 largest amount 
+select *
+from payment
+order by amount DESC
+limit 10;
+
+--between statement (it allows select from low value to high value)
+--return that has id between 10 and 20
+
+select *
+from customer
+where customer_id 
+between 10 and 20;
+
+--return customer_id, staff_id, and amount where amount range between 8-10
+
+select customer_id, staff_id, amount
+from payment
+where amount between 8 and 10;
+
+--not between: it will ignore the range and return everything else
+select customer_id, staff_id, amount
+from payment
+where amount not between 8 and 10;
+
+----------------
+select first_name, last_name
+from customer
+order by 1 DESC;
+
+select first_name, last_name
+from actor
+where first_name = 'Nick'
+limit 2;
+
+--aggregate functions (count, max, average, sum, min)
+select *
+from payment;
+
+
+--average of the amount
+
+select round(avg(amount), 2)
+from payment;
+
+select min(amount)
+from payment;
+
+select max(amount)
+from payment;
+
+-- total rental rate from the film table
+
+select sum (rental_rate)
+from film;
+
+-- total rental rate of R rate movies
+
+select sum (rental_rate) as total_rental_rate
+from film
+where rating = 'R';
+
+select sum (rental_rate) as total_rental_rate
+from film
+where rating = 'PG';
+
+--group by statement
+
+select staff_id, sum (amount) as amount_by_staff
+from payment
+group by staff_id; 
+
+select customer_id, sum (amount) 
+from payment
+group by customer_id 
+order by sum (amount) DESC
+limit 20;
+
+----having statement always goes with group by
+--- get customers that have spent more than 180$
+select customer_id, sum(amount) as total_amount
+from payment
+group by Customer_id
+having sum (amount) > 180
+order by sum(amount) desc
+limit 3;
+
+--using the as function to rename columns
+select first_name as forename, last_name as surname
+from customer;
+
+--using the count option
+select count (customer_id)
+from customer;
+
+--using the average option
+select avg (amount) 
+from payment
+where amount > '2';
+
+--using the sum function
+select  sum (amount)
+from payment;
+
+-- using the % = any # characters, _ = one character
+select *
+from customer
+where first_name like '_Johnson';
+
+--- using the 'union' option
+select first_name
+from customer
+union
+select last_name
+from actor;
+
+--using nested queries
+-- find staff_id who sold over 1000
+select first_name, last_name
+from payment
+where staff_id in (
+	select staff_id
+	from payment
+	where amount > 2
+);
